@@ -1,7 +1,9 @@
 extends KinematicBody2D
 
 const ACCELERATION = 500
-const MAX_SPEED = 80
+const MAX_SPEED = 200
+const FRICTION = 700
+const GRAVITY = 50
 
 var velocity = Vector2.ZERO
 
@@ -27,12 +29,15 @@ func _process(delta):
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	input_vector = input_vector.normalized()
 	
-	velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
+	#velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 	
 	if input_vector != Vector2.ZERO:
 		animTree.set('parameters/Move/blend_position', input_vector)
 		animState.travel('Move')
+		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 	else:
 		animState.travel('Idle')
+		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
+func _physics_process(delta):
 	velocity = move_and_slide(velocity)
