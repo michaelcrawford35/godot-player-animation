@@ -5,7 +5,7 @@ const MAX_SPEED = 200
 const FRICTION = 700
 const GRAVITY = 50
 
-var velocity = Vector2.ZERO
+var velocity = Vector2.ZERO # Speed with a direction
 
 var animPlayer
 onready var animTree = $AnimationTree
@@ -27,7 +27,7 @@ func _process(delta):
 	var input_vector = Vector2.ZERO
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
-	input_vector = input_vector.normalized()
+	#input_vector = input_vector.normalized()
 	
 	#velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 	
@@ -37,7 +37,9 @@ func _process(delta):
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 	else:
 		animState.travel('Idle')
-		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+		#velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+		velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
 
-func _physics_process(delta):
+func _physics_process(delta): # change in time
+	velocity.y += GRAVITY * delta
 	velocity = move_and_slide(velocity)

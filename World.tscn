@@ -20,3 +20,4 @@ position = Vector2( 362.857, 243.165 )
 
 [node name="Crate3" parent="YSort/Crates" instance=ExtResource( 2 )]
 position = Vector2( 506.488, 338.919 )
+scale = Vector2( 10, 1 )
